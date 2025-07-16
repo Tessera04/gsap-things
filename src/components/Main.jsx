@@ -44,6 +44,15 @@ function Main() {
         <polygon points="100,0 0,50 100,500" fill="black" />
       </svg>
 
+      <div className="absolute bottom-16 right-16 text-white z-10">
+        <h1 className="text-6xl md:text-8xl font-bold mb-4 text-right">
+          Gemo Planeta
+        </h1>
+        <p className="text-xl md:text-2xl font-light text-right max-w-2xl">
+          Donde cada gema cuenta una historia única
+        </p>
+      </div>
+
       {/* Roca (imagen) */}
       <img
         ref={rockRef}
