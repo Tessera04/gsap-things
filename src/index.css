@@ -1,11 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
-
 @import "tailwindcss";
-
-@font-face {
-    font-family: "Modern Negra";
-    src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
-}
 
 @theme {
     --color-yellow: #e7d393;
@@ -13,6 +6,10 @@
     --font-sans: "Mona Sans", sans-serif;
     --font-modern-negra: "Modern Negra", sans-serif;
     --font-serif: "DM Serif Text", serif;
+}
+
+* {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html,
@@ -66,10 +63,6 @@ body {
 
     nav {
         @apply fixed z-50 w-full;
-
-        div {
-            @apply flex md:flex-row flex-col md:justify-between items-center gap-5 py-5 lg:px-0 px-5 container mx-auto;
-        }
 
         p {
             @apply font-modern-negra text-3xl -mb-2;

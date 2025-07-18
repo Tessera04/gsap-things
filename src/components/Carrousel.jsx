@@ -2,14 +2,14 @@ import React, { useRef, useState, useEffect } from 'react'
 import gsap from 'gsap';
 
 const slides = [
-  { src: "/images/abrazarse.png" },
-  { src: "/images/cafe-muller.png" },
-  { src: "/images/desapareciendo.png" },
-  { src: "/images/escarbate.png" },
-  { src: "/images/pesadillas.jpg" },
-  { src: "/images/tiempo.jpg" },
-  { src: "/images/soundsystem.png" },
-  { src: "/images/sisyphone.png" },
+  { src: "/images/abrazarse.png", bg: "#afcb2f", titulo: "Abrazarse", contenido: "y abrazarse viste"},
+  { src: "/images/cafe-muller.png", bg: "#814f16", titulo: "Cafe Muller", contenido: "un cafesini"},
+  { src: "/images/desapareciendo.png", bg: "#044efb", titulo: "Desapareciendo", contenido: "jijo"},
+  { src: "/images/escarbate.png", bg: "#eb6b89", titulo: "Escarbate", contenido: "escarbate"},
+  { src: "/images/pesadillas.jpg", bg: "#ac0404", titulo: "Pesadillas", contenido: "pesadillas"},
+  { src: "/images/tiempo.jpg", bg: "#b6b924", titulo: "Tiempo", contenido: "Tiempo"},
+  { src: "/images/soundsystem.png", bg: "#899cbb", titulo: "Soundsystem", contenido: "Soundsystem"},
+  { src: "/images/sisyphone.png", bg: "#c0bcb5", titulo: "Sisyphone", contenido: "Sisyphone"},
 ];
 
 function Carrousel() {
@@ -63,27 +63,38 @@ function Carrousel() {
 
   return (
     <div className='flex'>
-      <div className='w-1/2'>
-        <h1>Este es un texto que va a salir al lado de lo otro creo</h1>
+      <div
+        className='w-1/2 flex flex-col items-center justify-center h-screen px-8'
+        style={{ backgroundColor: slides[current].bg }}
+      >
+        <h1 className="text-4xl font-bold text-center mb-6 text-black">
+          {slides[current].titulo}
+        </h1>
+        <p className="text-lg text-center text-black max-w-md leading-relaxed">
+          {slides[current].contenido}
+        </p>
       </div>
+
       <div className="relative h-screen overflow-hidden bg-black w-1/2">
         {/* Imagen de fondo: desenfocada */}
         <img
           ref={bgRef}
           key={`bg-${current}`}
           src={slides[current].src}
-          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-1000"
+          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-100"
           alt="Fondo actual"
         />
 
         {/* Imagen principal */}
-        <img
-          ref={mainRef}
-          key={`main-${current}`}
-          src={slides[current].src}
-          className="absolute inset-0 w-3/4 h-3/4 object-contain z-10 opacity-0"
-          alt={slides[current].name}
-        />
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <img
+            ref={mainRef}
+            key={`main-${current}`}
+            src={slides[current].src}
+            className="w-3/4 h-3/4 object-contain opacity-0"
+            alt={slides[current].name}
+          />
+        </div>
       </div>
     </div>
   );
