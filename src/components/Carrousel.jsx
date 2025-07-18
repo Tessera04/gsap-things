@@ -73,7 +73,18 @@ function Carrousel() {
         <p className="text-lg text-center text-black max-w-md leading-relaxed">
           {slides[current].contenido}
         </p>
+      <div
+        className='w-1/2 flex flex-col items-center justify-center h-screen px-8'
+        style={{ backgroundColor: slides[current].bg }}
+      >
+        <h1 className="text-4xl font-bold text-center mb-6 text-black">
+          {slides[current].titulo}
+        </h1>
+        <p className="text-lg text-center text-black max-w-md leading-relaxed">
+          {slides[current].contenido}
+        </p>
       </div>
+
 
       <div className="relative h-screen overflow-hidden bg-black w-1/2">
         {/* Imagen de fondo: desenfocada */}
@@ -82,10 +93,20 @@ function Carrousel() {
           key={`bg-${current}`}
           src={slides[current].src}
           className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-100"
+          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-100"
           alt="Fondo actual"
         />
 
         {/* Imagen principal */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <img
+            ref={mainRef}
+            key={`main-${current}`}
+            src={slides[current].src}
+            className="w-3/4 h-3/4 object-contain opacity-0"
+            alt={slides[current].name}
+          />
+        </div>
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <img
             ref={mainRef}
