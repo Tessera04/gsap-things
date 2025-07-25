@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect } from 'react';
 import gsap from 'gsap';
 
 const slides = [
-  { src: "/images/abrazarse.png", bg: "#afcb2f", titulo: "Abrazarse", contenido: "y abrazarse viste" },
+  { src: "/images/abrazarse.png", bg: "#afcb2f", titulo: "Abrazarse", contenido: "y abrazarse viste", fecha: "", paleta: "5", },
   { src: "/images/cafe-muller.png", bg: "#814f16", titulo: "Cafe Muller", contenido: "un cafesini" },
   { src: "/images/desapareciendo.png", bg: "#044efb", titulo: "Desapareciendo", contenido: "jijo" },
   { src: "/images/escarbate.png", bg: "#eb6b89", titulo: "Escarbate", contenido: "escarbate" },
@@ -16,6 +16,7 @@ function Carrousel() {
   const [current, setCurrent] = useState(0);
   const mainRef = useRef(null);
   const bgRef = useRef(null);
+  const glowRef = useRef(null);
   const isScrolling = useRef(false);
 
   useEffect(() => {
@@ -35,6 +36,56 @@ function Carrousel() {
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => {
       window.removeEventListener("wheel", handleWheel);
+    };
+  }, [current]);
+
+  useEffect(() => {
+    const card = mainRef.current;
+
+    const handleMouseMove = (e) => {
+      const bounds = card.getBoundingClientRect();
+
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      const leftX = mouseX - bounds.x;
+      const topY = mouseY - bounds.y;
+
+      const center = {
+        x: leftX - bounds.width / 2,
+        y: topY - bounds.height / 2,
+      };
+
+      // Movimiento instantáneo sin delay
+      gsap.set(card, {
+        scale: 1.05,
+        rotateX: center.y / 15,
+        rotateY: -center.x / 15,
+        transformPerspective: 2000,
+        transformOrigin: 'center',
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(card, {
+        scale: 1,
+        rotateX: 0,
+        rotateY: 0,
+        duration: 0.2,
+        ease: 'power2.out',
+      });
+    };
+
+    if (card) {
+      card.addEventListener('mousemove', handleMouseMove);
+      card.addEventListener('mouseleave', handleMouseLeave);
+    }
+
+    return () => {
+      if (card) {
+        card.removeEventListener('mousemove', handleMouseMove);
+        card.removeEventListener('mouseleave', handleMouseLeave);
+      }
     };
   }, [current]);
 
@@ -62,57 +113,40 @@ function Carrousel() {
   };
 
   return (
-    <div className='flex'>
+    <div className='flex h-[calc(100vh-78px)]'>
       <div
-        className='w-1/2 flex flex-col items-center justify-center h-screen px-8'
+        className='w-1/2 flex flex-col items-center justify-center px-8'
         style={{ backgroundColor: slides[current].bg }}
       >
-        <h1 className="text-4xl font-bold text-center mb-6 text-black">
-          {slides[current].titulo}
-        </h1>
         <p className="text-lg text-center text-black max-w-md leading-relaxed">
           {slides[current].contenido}
         </p>
-        <div
-          className='w-1/2 flex flex-col items-center justify-center h-screen px-8'
-          style={{ backgroundColor: slides[current].bg }}
-        >
-          <h1 className="text-4xl font-bold text-center mb-6 text-black">
-            {slides[current].titulo}
-          </h1>
-          <p className="text-lg text-center text-black max-w-md leading-relaxed">
-            {slides[current].contenido}
-          </p>
-        </div>
+      </div>
 
+      <div className="relative overflow-hidden bg-black w-1/2">
+        <img
+          ref={bgRef}
+          key={`bg-${current}`}
+          src={slides[current].src}
+          className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-100"
+          alt="Fondo actual"
+        />
 
-        <div className="relative h-screen overflow-hidden bg-black w-1/2">
-          {/* Imagen de fondo: desenfocada */}
-          <img
-            ref={bgRef}
-            key={`bg-${current}`}
-            src={slides[current].src}
-            className="absolute inset-0 w-full h-full object-cover blur-md scale-105 opacity-0 transition-opacity duration-100"
-            alt="Fondo actual"
-          />
-
-          {/* Imagen principal */}
-          <div className="absolute inset-0 flex items-center justify-center z-10">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="relative w-2/4 h-3/4">
             <img
               ref={mainRef}
               key={`main-${current}`}
               src={slides[current].src}
-              className="w-3/4 h-3/4 object-contain opacity-0"
+              className="w-full h-full object-contain opacity-0 rounded-lg"
               alt={slides[current].name}
             />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center z-10">
-            <img
-              ref={mainRef}
-              key={`main-${current}`}
-              src={slides[current].src}
-              className="w-3/4 h-3/4 object-contain opacity-0"
-              alt={slides[current].name}
+            <h1 className="text-4xl font-roboto font-light text-center mb-6 text-[#d0d0d0] pt-4">
+              "{slides[current].titulo}"
+            </h1>
+            <div
+              ref={glowRef}
+              className="absolute inset-0 pointer-events-none rounded-lg z-10"
             />
           </div>
         </div>
@@ -121,4 +155,4 @@ function Carrousel() {
   );
 }
 
-      export default Carrousel
+export default Carrousel;
